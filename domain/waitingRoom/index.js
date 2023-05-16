@@ -27,6 +27,10 @@ class WaitingRoomDomain {
         }
         return waitingRoom;
     }
+
+    post(idRdv,numSecu,name){
+        
+    }
 }
 
 module.exports.WaitingRoomDomain = WaitingRoomDomain;
