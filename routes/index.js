@@ -50,7 +50,7 @@ router.post('/appointments/newrdv', (req, resp) => {
     const numSecu = req.body.numSecu;
 
     function formatNumSecu(numbers) {
-        let pattern = 'x xx xx xx xxx xxx'
+        const pattern = 'x xx xx xx xxx xxx';
         for (let i = 0; i < numbers.length; i++) {
             pattern = pattern.replace('x', numbers[i]);
         }
@@ -88,7 +88,7 @@ router.post('/appointments/newrdv', (req, resp) => {
         }
     }
     const idRdv = minRdv < 9 ? "#" + selectedRoom[0] + raisonRdv + "0" + (minRdv + 1) : "#" + selectedRoom[0] + raisonRdv + (minRdv + 1);
-    const data = `${idRdv},${formatNumSecu(numSecu)},${prenomPatient} ${nomPatient}\n`;
+    const data = `${idRdv},${formatNumSecu(numSecu)},${prenomPatient} ${nomPatient} ${emailPatient}\n`;
     fs.appendFile('data.csv', data, (err) => {
         if (err) throw err;
         console.log('Data appended to file');
