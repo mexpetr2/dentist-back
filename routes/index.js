@@ -61,15 +61,39 @@ router.post('/appointments/newrdv', (req, resp) => {
     const roomList = ['A', 'B', 'C', 'D'];
     const nbRdvParSalle = {};
     const nbDeRdv = [];
+
     roomList.map((room) => {
-        const newObject = {};
-        nbRdvParSalle[room] = list[room].length;
-        nbDeRdv.push(list[room].length);
+        let tempsRdv = 0;
+        list[room].map((selRoom) => {
+            const rdvType = selRoom.reference[2];
+            let rdvTime = 0;
+            switch (rdvType) {
+                case "1":
+                    rdvTime = 30;
+                    break;
+                case "2":
+                    rdvTime = 20;
+                    break;
+                case "3":
+                    rdvTime = 60;
+                    break;
+                case "4":
+                    rdvTime = 90;
+                    break;
+                default:
+                    rdvTime = 0;
+                    break;
+            }
+            tempsRdv += rdvTime;
+        });
+        nbRdvParSalle[room] = tempsRdv;
+        nbDeRdv.push(tempsRdv);
     });
+
     const minRdv = Math.min(...nbDeRdv);
     const selectedRoom = [];
     roomList.map((room) => {
-        if (nbRdvParSalle[room] === minRdv && minRdv < 10) {
+        if (nbRdvParSalle[room] === minRdv && minRdv < 600 && list[room].length < 15) {
             selectedRoom.push(room);
         }
     });
@@ -87,7 +111,7 @@ router.post('/appointments/newrdv', (req, resp) => {
             selectedRoom.splice(0, 1);
         }
     }
-    const idRdv = minRdv < 9 ? "#" + selectedRoom[0] + raisonRdv + "0" + (minRdv + 1) : "#" + selectedRoom[0] + raisonRdv + (minRdv + 1);
+    const idRdv = list[selectedRoom[0]].length < 9 ? "#" + selectedRoom[0] + raisonRdv + "0" + (list[selectedRoom[0]].length + 1) : "#" + selectedRoom[0] + raisonRdv + (list[selectedRoom[0]].length + 1);
     const data = `${idRdv},${formatNumSecu(numSecu)},${prenomPatient} ${nomPatient} ${emailPatient}\n`;
     fs.appendFile('data.csv', data, (err) => {
         if (err) throw err;
