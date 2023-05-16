@@ -98,7 +98,7 @@ router.post('/appointments/newrdv', (req, resp) => {
         }
     });
     if (selectedRoom.length === 0) {
-        resp.status(201).json({ message: "Pas de rdv disponible" });
+        resp.status(401).json({ message: "Pas de rdv disponible" });
     }
     if (selectedRoom.length > 1) {
         if (raisonRdv === "1" && selectedRoom.includes("A")) {
@@ -116,7 +116,8 @@ router.post('/appointments/newrdv', (req, resp) => {
     fs.appendFile('data.csv', data, (err) => {
         if (err) throw err;
         console.log('Data appended to file');
-        resp.status(200).json({ idRdv });
+        waitingRoomDomain.reinit();
+        resp.status(201).json({ idRdv });
     });
 });
 

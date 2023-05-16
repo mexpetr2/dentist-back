@@ -3,6 +3,10 @@ class WaitingRoomDomain {
         this.storage = storage;
     }
 
+    reinit() {
+        this.storage.reinit();
+    }
+
     list() {
         const results = this.storage.getAll();
         const waitingRooms = {

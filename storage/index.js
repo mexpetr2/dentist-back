@@ -16,6 +16,9 @@ const AppointmentStorage = {
     },
     update : (id) => {
         return DATABASE.get(id);
+    },
+    reinit : () => {
+        initStorage(DATABASE);
     }
 }
 
