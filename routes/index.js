@@ -50,7 +50,7 @@ router.post('/appointments/newrdv', (req, resp) => {
     const numSecu = req.body.numSecu;
 
     function formatNumSecu(numbers) {
-        const pattern = 'x xx xx xx xxx xxx';
+        let pattern = 'x xx xx xx xxx xxx';
         for (let i = 0; i < numbers.length; i++) {
             pattern = pattern.replace('x', numbers[i]);
         }
@@ -92,8 +92,8 @@ router.post('/appointments/newrdv', (req, resp) => {
     fs.appendFile('data.csv', data, (err) => {
         if (err) throw err;
         console.log('Data appended to file');
+        resp.status(200).json({ idRdv });
     });
-    resp.status(200).json({ idRdv });
 });
 
 const routers = (app) => {
